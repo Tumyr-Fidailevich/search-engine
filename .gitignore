@@ -1,0 +1,8 @@
+hw
+build/
+config
+.vscode
+vcpkg.json
+build.sh
+notes.txt
+vcpkg_installed
