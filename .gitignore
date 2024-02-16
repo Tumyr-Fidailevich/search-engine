@@ -1,6 +1,5 @@
 hw
 build/
-config
 .vscode
 vcpkg.json
 build.sh
