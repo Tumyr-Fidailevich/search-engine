@@ -11,9 +11,9 @@ namespace ConverterJson
 {
     std::vector<Document> getTextDocuments(const std::string& resourcePath = DEFAULT_RESOURCE_PATH) noexcept;
 
-    std::vector<std::string> getRequests(const std::string& requestsPath = DEFAULT_PATH);
+    std::vector<std::string> getRequests(const std::string& requestsPath = DEFAULT_REQUESTS_PATH);
 
-    void putAnswers(const std::vector<std::vector<RelativeIndex>>& answers, const std::string& answersPath = DEFAULT_PATH);
+    void putAnswers(const std::vector<std::vector<RelativeIndex>>& answers, const std::string& answersPath = DEFAULT_ANSWERS_PATH);
 };
 
 #endif //CONVERTER_JSON_H

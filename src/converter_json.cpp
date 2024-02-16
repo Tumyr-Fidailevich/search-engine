@@ -11,9 +11,9 @@ std::vector<Document> ConverterJson::getTextDocuments(const std::string& resourc
         std::ifstream fileStream(file.path());
         if(fileStream.is_open())
         {
-            std::string documentValue;
-            fileStream >> documentValue;
-            results.emplace_back(file.path().filename(), std::move(documentValue));
+            std::stringstream documentStream;
+            documentStream << fileStream.rdbuf();
+            results.emplace_back(file.path().filename().string(), std::move(documentStream.str()));
         }
         fileStream.close();
     }
