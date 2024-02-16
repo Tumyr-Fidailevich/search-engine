@@ -1,10 +1,6 @@
 #include "converter_json.h"
 
 
-const std::string defaultResourcePath = "../../resources";
-const std::string defaultRequestsPath = "../../config";
-
-
 std::vector<Document> ConverterJson::getTextDocuments(const std::string& resourcePath) noexcept
 {
     if(!std::filesystem::exists(resourcePath)) return {};
@@ -40,7 +36,38 @@ std::vector<std::string> ConverterJson::getRequests(const std::string& requestsP
     return std::move(requestsJson["requests"]);
 }
 
-void ConverterJson::putAnswers(const std::vector<std::vector<std::pair<int, float>>>& answers)
+void ConverterJson::putAnswers(const std::vector<std::vector<RelativeIndex>>& answers, const std::string& answersPath)
 {
+    std::ofstream outputFile(answersPath);
+
+    if(!outputFile.is_open())
+    {
+        std::cerr << "Error during open answers file" << std::endl;
+        return;
+    }
+
+    nlohmann::json outputJson;
+    for(std::size_t i = 0; i < answers.size(); i++)
+    {
+        nlohmann::json request;
+
+        std::ostringstream requestName("request");
+        requestName << std::setw(3) << std::setfill('0') << (i + 1);
+
+        if(!answers[i].empty())
+        {
+            request["result"] = true;
+            for(const auto& relativeIndex : answers[i])
+            {
+                request["relevance"].push_back({{"doc_id", relativeIndex.doc_id}, 
+                                                {"rank", relativeIndex.rank}});
+            }
+        }else
+        {
+            request["result"] = false;
+        }
+        
+        outputJson["answers"][requestName.str()] = request;
+    }
 
 }
