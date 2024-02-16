@@ -1,28 +1,17 @@
 #ifndef CONVERTER_JSON_H
 #define CONVERTER_JSON_H
 
-
-#include <iostream>
-#include <vector>
-#include "nlohmann/json.hpp"
-#include "boost/filesystem.hpp"
+#include "pch.h"
+#include "document.h"
 
 
-class ConverterJson
+namespace ConverterJson
 {
-public:
-    ConverterJson() = default;
-
-    std::vector<std::string> getTextDocuments();
-
-    int getResponsesLimit();
+    std::vector<Document> getTextDocuments() noexcept;
 
     std::vector<std::string> getRequests();
 
-    void putAnswers(std::vector<std::vector<std::pair<int, float>>>answers);
-
-private:
-
+    void putAnswers(const std::vector<std::vector<std::pair<int, float>>>& answers);
 };
 
 #endif //CONVERTER_JSON_H
