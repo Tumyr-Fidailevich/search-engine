@@ -1,11 +1,11 @@
 #include "converter_json.h"
 
 
-static const std::string resourcePath = "../../resources";
-static const std::string requestsPath = "../../config";
+const std::string defaultResourcePath = "../../resources";
+const std::string defaultRequestsPath = "../../config";
 
 
-std::vector<Document> ConverterJson::getTextDocuments() noexcept
+std::vector<Document> ConverterJson::getTextDocuments(const std::string& resourcePath) noexcept
 {
     if(!std::filesystem::exists(resourcePath)) return {};
 
@@ -23,7 +23,7 @@ std::vector<Document> ConverterJson::getTextDocuments() noexcept
     return std::move(results);
 }
 
-std::vector<std::string> ConverterJson::getRequests()
+std::vector<std::string> ConverterJson::getRequests(const std::string& requestsPath)
 {
     if(!std::filesystem::exists(requestsPath)) throw std::runtime_error("Requests file doesn't exists");
 
