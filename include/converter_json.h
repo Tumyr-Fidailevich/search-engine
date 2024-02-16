@@ -3,19 +3,17 @@
 
 #include "pch.h"
 #include "document.h"
-
-
-extern const std::string defaultResourcePath;
-extern const std::string defaultRequestsPath;
+#include "relative_index.h"
+#include "config.h"
 
 
 namespace ConverterJson
 {
-    std::vector<Document> getTextDocuments(const std::string& resourcePath = defaultResourcePath) noexcept;
+    std::vector<Document> getTextDocuments(const std::string& resourcePath = DEFAULT_RESOURCE_PATH) noexcept;
 
-    std::vector<std::string> getRequests(const std::string& requestsPath = defaultRequestsPath);
+    std::vector<std::string> getRequests(const std::string& requestsPath = DEFAULT_PATH);
 
-    void putAnswers(const std::vector<std::vector<std::pair<int, float>>>& answers);
+    void putAnswers(const std::vector<std::vector<RelativeIndex>>& answers, const std::string& answersPath = DEFAULT_PATH);
 };
 
 #endif //CONVERTER_JSON_H
