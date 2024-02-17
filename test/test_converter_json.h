@@ -3,7 +3,7 @@
 
 
 const std::string resourcePath = "../test/test_resources";
-const std::string requestsPath = "../test/config/requests.json";
+const std::string configPath = "../test/config";
 
 
 TEST(ConverterJsonTest, getTextDocumentsRegularCase)
@@ -36,3 +36,26 @@ TEST(ConverterJsonTest, getTextDocumentsNonExistentDirectoryCase)
     ASSERT_EQ(documents, expected);
 }
 
+TEST(ConverterJsonTest, getRequestsRegularCase)
+{
+    std::string testPath = configPath + "/requests.json";
+    auto requests = ConverterJson::getRequests(testPath);
+
+    std::vector<std::string> expected{"some words", "some other words"};
+
+    ASSERT_EQ(requests, expected);
+}
+
+TEST(ConverterJsonTest, getRequestsEmptyRequestsCase)
+{
+    std::string testPath = configPath + "/empty_requests.json";
+
+    ASSERT_THROW(ConverterJson::getRequests(testPath), std::runtime_error);
+}
+
+TEST(ConverterJsonTest, getRequestsNonExistentDirectoryCase)
+{
+    std::string testPath = configPath + "/non_existent.json";
+
+    ASSERT_THROW(ConverterJson::getRequests(testPath), std::runtime_error);
+}
