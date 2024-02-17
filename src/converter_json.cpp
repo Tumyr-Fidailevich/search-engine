@@ -26,7 +26,11 @@ std::vector<std::string> ConverterJson::getRequests(const std::string& requestsP
 
     std::ifstream requestsFileStream(requestsPath);
 
-    if(!requestsFileStream.is_open()) throw std::runtime_error("Can't open requests file");
+    if(!requestsFileStream.is_open())
+    {
+        std::cerr << "Can't open requests file" << std::endl;
+        return {};
+    }
 
     nlohmann::json requestsJson;
 
@@ -39,14 +43,14 @@ std::vector<std::string> ConverterJson::getRequests(const std::string& requestsP
     return std::move(requestsJson["requests"]);
 }
 
-void ConverterJson::putAnswers(const std::vector<std::vector<RelativeIndex>>& answers, const std::string& answersPath)
+nlohmann::json ConverterJson::putAnswers(const std::vector<std::vector<RelativeIndex>>& answers, const std::string& answersPath) noexcept
 {
     std::ofstream outputFile(answersPath);
 
     if(!outputFile.is_open())
     {
         std::cerr << "Error during open answers file" << std::endl;
-        return;
+        return {};
     }
 
     nlohmann::json outputJson;
@@ -54,16 +58,18 @@ void ConverterJson::putAnswers(const std::vector<std::vector<RelativeIndex>>& an
     {
         nlohmann::json request;
 
-        std::ostringstream requestName("request");
-        requestName << std::setw(3) << std::setfill('0') << (i + 1);
+        std::ostringstream requestName;
+        requestName << "request" << std::setw(3) << std::setfill('0') << (i + 1);
 
         if(!answers[i].empty())
         {
             request["result"] = true;
             for(const auto& relativeIndex : answers[i])
             {
+                std::ostringstream rankWithCorrectPrecisionStream;
+                rankWithCorrectPrecisionStream << std::fixed << std::setprecision(3) << relativeIndex.rank;
                 request["relevance"].push_back({{"doc_id", relativeIndex.doc_id}, 
-                                                {"rank", relativeIndex.rank}});
+                                                {"rank", rankWithCorrectPrecisionStream.str()}});
             }
         }else
         {
@@ -71,8 +77,12 @@ void ConverterJson::putAnswers(const std::vector<std::vector<RelativeIndex>>& an
         }
         
         outputJson["answers"][requestName.str()] = request;
-
-        outputFile.close();
+        
     }
 
+    outputFile << outputJson.dump(4);
+
+    outputFile.close();
+
+    return std::move(outputJson);
 }
