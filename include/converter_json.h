@@ -13,7 +13,7 @@ namespace ConverterJson
 
     std::vector<std::string> getRequests(const std::string& requestsPath = DEFAULT_REQUESTS_PATH);
 
-    void putAnswers(const std::vector<std::vector<RelativeIndex>>& answers, const std::string& answersPath = DEFAULT_ANSWERS_PATH);
-};
+    nlohmann::json putAnswers(const std::vector<std::vector<RelativeIndex>>& answers, const std::string& answersPath = DEFAULT_ANSWERS_PATH) noexcept;
+}
 
 #endif //CONVERTER_JSON_H
