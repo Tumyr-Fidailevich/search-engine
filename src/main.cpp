@@ -1,8 +1,14 @@
-#include <iostream>
-#include "converter_json.h"
+#include <string>
+#include "config.h"
+#include "search_server.h"
+
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Hello world!" << std::endl;
+    auto config = Config(DEFAULT_CONFIG_PATH);
+
+    auto search_server = SearchServer(config);
+    
+    search_server.run();
     return 0;
 }
