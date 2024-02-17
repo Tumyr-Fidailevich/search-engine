@@ -59,3 +59,41 @@ TEST(ConverterJsonTest, getRequestsNonExistentDirectoryCase)
 
     ASSERT_THROW(ConverterJson::getRequests(testPath), std::runtime_error);
 }
+
+TEST(ConverterJsonTest, PutAnswerRegularCase)
+{
+    std::string testPath = configPath + "/answers.json";
+
+    std::vector<std::vector<RelativeIndex>> answers = {
+                                                        {{0, 0.989}, {1, 0.897}, {2, 0.750}, {3, 0.670}, {4, 0.561}}, 
+                                                        {{0, 0.769}}, 
+                                                        {}};
+
+    nlohmann::json answersJson = ConverterJson::putAnswers(answers, testPath);
+
+    nlohmann::json expected = R"({
+                                    "answers": {
+                                        "request001": {
+                                            "result": true,
+                                            "relevance": [
+                                                {"doc_id": 0, "rank" : "0.989"},
+                                                {"doc_id": 1, "rank" : "0.897"},
+                                                {"doc_id": 2, "rank" : "0.750"},
+                                                {"doc_id": 3, "rank" : "0.670"},
+                                                {"doc_id": 4, "rank" : "0.561"}
+                                            ]
+                                        },
+                                        "request002": {
+                                            "result": true,
+                                            "relevance": [
+                                                {"doc_id": 0, "rank" : "0.769"}
+                                            ]
+                                        },
+                                        "request003": {
+                                            "result": false
+                                        }
+                                    }
+                                })"_json;
+
+    ASSERT_EQ(answersJson, expected);
+}
