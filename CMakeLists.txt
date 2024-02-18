@@ -31,7 +31,7 @@ target_link_libraries(search-engine PUBLIC search-engine-lib)
 
 if(BUILD_TESTS)
   enable_testing()
-  set(TEST_SOURCES test/test.cpp test/test_converter_json.h)
+  set(TEST_SOURCES test/test.cpp test/test_converter_json.h test/test_config.h)
   add_executable(test_search_engine ${TEST_SOURCES})
   target_link_libraries(test_search_engine PUBLIC search-engine-lib gtest_main)
   include(GoogleTest)

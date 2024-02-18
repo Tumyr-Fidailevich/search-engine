@@ -1,9 +1,10 @@
 #include "gtest/gtest.h"
 #include "converter_json.h"
 
-
-const std::string resourcePath = "../test/test_resources";
-const std::string configPath = "../test/config";
+namespace{
+    static const std::string resourcePath = "../test/test_resources";
+    static const std::string configPath = "../test/config"; 
+}
 
 
 TEST(ConverterJsonTest, getTextDocumentsRegularCase)
